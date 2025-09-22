@@ -20,6 +20,20 @@ fn get_all_files() -> glob::Paths {
     glob("./media/*").expect("Failed to read files")
 }
 
+fn convert_secs_to_min_and_sec(secs: u64) -> String {
+    let mut res = String::new();
+    if secs / 60 < 10 {
+        res.push('0');
+    }
+    res = res + &(secs / 60).to_string();
+    res.push(':');
+    if secs % 60 < 10 {
+        res.push('0');
+    }
+    res = res + &(secs % 60).to_string();
+    res
+}
+
 fn read_mp4(path: PathBuf) -> Info {
     let f = File::open(path.clone()).unwrap();
     let mp4 = mp4::read_mp4(f).unwrap();
@@ -31,7 +45,7 @@ fn read_mp4(path: PathBuf) -> Info {
                 .next_back()
                 .unwrap()
                 .to_string(),
-            len: track.duration().as_secs().to_string(),
+            len: convert_secs_to_min_and_sec(track.duration().as_secs()),
         };
     }
     res
