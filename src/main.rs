@@ -26,7 +26,11 @@ fn read_mp4(path: PathBuf) -> Info {
     let mut res = Info::new();
     for track in mp4.tracks().values() {
         res = Info {
-            name: String::from(path.to_str().unwrap()),
+            name: String::from(path.to_str().unwrap())
+                .split('/')
+                .next_back()
+                .unwrap()
+                .to_string(),
             len: track.duration().as_secs().to_string(),
         };
     }
