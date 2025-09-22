@@ -1,0 +1,7 @@
+[package]
+name = "mp4-info"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+mp4 = "0.14.0"
