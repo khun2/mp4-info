@@ -1,3 +1,4 @@
+use std::io::{LineWriter, Write};
 use std::{fs::File, path::PathBuf};
 
 use glob::glob;
@@ -51,6 +52,15 @@ fn read_mp4(path: PathBuf) -> Info {
     res
 }
 
+fn write_to_file(input: &Vec<Info>) {
+    let file = File::create("output.txt").unwrap();
+    let mut file = LineWriter::new(file);
+    for info in input {
+        file.write_all(format!("{}\t\t\t\t{}\n", info.name, info.len).as_bytes())
+            .unwrap();
+    }
+}
+
 fn main() {
     let files = get_all_files();
     let mut output = Vec::new();
@@ -60,7 +70,8 @@ fn main() {
             Err(e) => println!("{:?}", e),
         }
     }
-    for info in output {
+    write_to_file(&output);
+    for info in &output {
         println!("{}\t{}", info.name, info.len)
     }
 }
